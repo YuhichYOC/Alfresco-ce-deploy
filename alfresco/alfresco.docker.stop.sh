@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/alfresco
+cd changeme_workdirectory_fullpath/alfresco
 TEST_VALUE=$(./alfresco.running.test.sh)
 echo $TEST_VALUE | grep "0$"
 if [ $? -eq 0 ]; then

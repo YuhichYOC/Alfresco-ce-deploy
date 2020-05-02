@@ -1,16 +1,16 @@
 #!/bin/bash
-if [ -d ~/alfrescodb ]; then
-    ~/alfrescodb/alfrescodb.docker.start.sh
+if [ -d changeme_workdirectory_fullpath/alfrescodb ]; then
+    changeme_workdirectory_fullpath/alfrescodb/alfrescodb.docker.start.sh
 fi
-if [ -d ~/activemq ]; then
-    ~/activemq/activemq.docker.start.sh
-    ~/activemq/activemq.start.sh
+if [ -d changeme_workdirectory_fullpath/activemq ]; then
+    changeme_workdirectory_fullpath/activemq/activemq.docker.start.sh
+    changeme_workdirectory_fullpath/activemq/activemq.start.sh
 fi
-if [ -d ~/alfresco-search ]; then
-    ~/alfresco-search/alfresco-search.docker.start.sh
-    ~/alfresco-search/alfresco-search.start.sh
+if [ -d changeme_workdirectory_fullpath/alfresco-search ]; then
+    changeme_workdirectory_fullpath/alfresco-search/alfresco-search.docker.start.sh
+    changeme_workdirectory_fullpath/alfresco-search/alfresco-search.start.sh
 fi
-if [ -d ~/alfresco ]; then
-    ~/alfresco/alfresco.docker.start.sh
-    ~/alfresco/alfresco.start.sh
+if [ -d changeme_workdirectory_fullpath/alfresco ]; then
+    changeme_workdirectory_fullpath/alfresco/alfresco.docker.start.sh
+    changeme_workdirectory_fullpath/alfresco/alfresco.start.sh
 fi
