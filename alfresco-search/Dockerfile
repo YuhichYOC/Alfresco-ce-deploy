@@ -5,6 +5,7 @@ RUN mkdir /opt/alfresco
 RUN apt-get update \
     && apt-get -y install \
     openjdk-11-jdk \
+    unzip \
     wget
 
 RUN wget -O /opt/alfresco/alfresco-search-services-1.3.0.1.zip \
