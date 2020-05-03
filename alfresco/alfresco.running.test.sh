@@ -1,6 +1,5 @@
 #!/bin/bash
-TEST_VALUE=$(docker exec alfresco ps -ef)
-echo $TEST_VALUE | grep 'Dcatalina.base'
+curl --head changeme_alfresco_host:8080
 if [ $? -eq 0 ]; then
     echo "1"
 else
