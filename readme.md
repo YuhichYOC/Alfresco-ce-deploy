@@ -39,7 +39,7 @@
 - https://github.com/YuhichYOC/Alfresco-ce-deploy/blob/master/activemq/Dockerfile
 
 ## Show with picture
-![](https://github.com/YuhichYOC/Alfresco-ce-deploy/blob/master/img/img1.png, "Installation image")
+![](https://raw.githubusercontent.com/YuhichYOC/Alfresco-ce-deploy/master/img/img1.png, "Installation image")
 
 ## Alfresco
 1. Make directory alfresco into /opt
