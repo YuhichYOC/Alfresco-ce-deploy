@@ -1,5 +1,5 @@
 FROM postgres
 
-ENV POSTGRES_DB=changeme_alfrescodbname
-ENV POSTGRES_USER=changeme_alfrescodbuser
-ENV POSTGRES_PASSWORD=changeme_alfrescodbpassword
+ENV POSTGRES_DB=alfresco
+ENV POSTGRES_USER=[postgres_user]
+ENV POSTGRES_PASSWORD=[postgres_password]

@@ -1,22 +1,11 @@
-FROM ubuntu
+FROM yuhichyoc/openjdk
 
 RUN mkdir /opt/alfresco
 
-RUN apt-get update \
-    && apt-get -y install \
-    openjdk-11-jdk \
-    unzip \
-    wget
+COPY ./[alfresco-search].zip /opt/alfresco/
+RUN unzip /opt/alfresco/[alfresco-search].zip -d /opt/alfresco/ \
+    && rm /opt/alfresco/[alfresco-search].zip
 
-RUN wget -O /opt/alfresco/alfresco-search-services-1.3.0.1.zip \
-    "https://download.alfresco.com/cloudfront/release/community/SearchServices/1.3.0.1/alfresco-search-services-1.3.0.1.zip" \
-    && unzip /opt/alfresco/alfresco-search-services-1.3.0.1.zip -d /opt/alfresco/ \
-    && rm /opt/alfresco/alfresco-search-services-1.3.0.1.zip
-
-COPY ./shared.properties /opt/alfresco/
-COPY ./solrcore.properties /opt/alfresco/
-COPY ./solr.in.sh /opt/alfresco/
-
-RUN mv -f /opt/alfresco/shared.properties /opt/alfresco/alfresco-search-services/solrhome/conf/shared.properties \
-    && mv -f /opt/alfresco/solr.in.sh /opt/alfresco/alfresco-search-services/solr.in.sh \
-    && mv -f /opt/alfresco/solrcore.properties /opt/alfresco/alfresco-search-services/solrhome/templates/rerank/conf/solrcore.properties
+COPY ./Deployer.py /opt/alfresco/
+RUN python3 /opt/alfresco/Deployer.py \
+    && rm /opt/alfresco/Deployer.py

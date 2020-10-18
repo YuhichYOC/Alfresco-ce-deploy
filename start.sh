@@ -1,16 +1,41 @@
 #!/bin/bash
-if [ -d changeme_workdirectory_fullpath/alfrescodb ]; then
-    changeme_workdirectory_fullpath/alfrescodb/alfrescodb.docker.start.sh
+
+ALFRESCODB_START() {
+  docker start alfrescodb
+}
+
+ACTIVEMQ_START() {
+  docker start activemq
+  docker exec activemq /opt/activemq/activemq start
+}
+
+ARTEMIS_START() {
+  docker start artemis
+  docker exec artemis /opt/artemis/bin/artemis-service start
+}
+
+ALFRESCO_SEARCH_START() {
+  docker start alfresco-search
+  docker exec alfresco-search /opt/alfresco/alfresco-search-services/solr/bin/solr start -force -a "-Dcreate.alfresco.defaults=alfresco,archive"
+}
+
+ALFRESCO_START() {
+  docker start alfresco
+  docker exec alfresco /opt/alfresco/[tomcat]/bin/startup.sh
+}
+
+if [ -d /home/ubuntu/alfrescodb ]; then
+  ALFRESCODB_START
 fi
-if [ -d changeme_workdirectory_fullpath/activemq ]; then
-    changeme_workdirectory_fullpath/activemq/activemq.docker.start.sh
-    changeme_workdirectory_fullpath/activemq/activemq.start.sh
+if [ -d /home/ubuntu/activemq ]; then
+  ACTIVEMQ_START
 fi
-if [ -d changeme_workdirectory_fullpath/alfresco-search ]; then
-    changeme_workdirectory_fullpath/alfresco-search/alfresco-search.docker.start.sh
-    changeme_workdirectory_fullpath/alfresco-search/alfresco-search.start.sh
+if [ -d /home/ubuntu/artemis ]; then
+  ARTEMIS_START
 fi
-if [ -d changeme_workdirectory_fullpath/alfresco ]; then
-    changeme_workdirectory_fullpath/alfresco/alfresco.docker.start.sh
-    changeme_workdirectory_fullpath/alfresco/alfresco.start.sh
+if [ -d /home/ubuntu/alfresco-search ]; then
+  ALFRESCO_SEARCH_START
+fi
+if [ -d /home/ubuntu/alfresco ]; then
+  ALFRESCO_START
 fi

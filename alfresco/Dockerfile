@@ -1,49 +1,41 @@
-FROM ubuntu
+FROM yuhichyoc/openjdk
 
 RUN mkdir /opt/alfresco \
     && mkdir /opt/alfresco/repo
 
-RUN apt-get update \
-    && apt-get -y install \
-    openjdk-11-jdk \
-    unzip \
-    wget
+COPY ./[tomcat].zip /opt/alfresco/
+RUN unzip /opt/alfresco/[tomcat].zip -d /opt/alfresco/ \
+    && rm /opt/alfresco/[tomcat].zip
 
-RUN wget -O /opt/alfresco/apache-tomcat-9.0.34.zip \
-    "http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-9/v9.0.34/bin/apache-tomcat-9.0.34.zip" \
-    && unzip /opt/alfresco/apache-tomcat-9.0.34.zip -d /opt/alfresco/ \
-    && rm /opt/alfresco/apache-tomcat-9.0.34.zip
+COPY ./[alfresco].zip /opt/alfresco/
+RUN unzip /opt/alfresco/[alfresco].zip -d /opt/alfresco/ \
+    && mkdir -p /opt/alfresco/[tomcat]/shared/classes \
+    && mkdir -p /opt/alfresco/[tomcat]/shared/lib \
+    && mkdir /opt/alfresco/[tomcat]/amps \
+    && mkdir /opt/alfresco/[tomcat]/amps_share \
+    && rm -r /opt/alfresco/[tomcat]/webapps/* \
+    && mv /opt/alfresco/[alfresco]/web-server/shared/classes/alfresco-global.properties.sample /opt/alfresco/[tomcat]/shared/classes/alfresco-global.properties \
+    && mv /opt/alfresco/[alfresco]/web-server/webapps/* /opt/alfresco/[tomcat]/webapps/ \
+    && mv /opt/alfresco/[alfresco]/web-server/conf/Catalina/localhost/* /opt/alfresco/[tomcat]/conf/ \
+    && mv /opt/alfresco/[alfresco]/web-server/lib/* /opt/alfresco/[tomcat]/lib/ \
+    && mv /opt/alfresco/[alfresco]/amps/alfresco-share-services.amp /opt/alfresco/[tomcat]/amps/ \
+    && mv /opt/alfresco/[alfresco]/bin/apply_amps.sh /opt/alfresco/[tomcat]/bin/ \
+    && mv /opt/alfresco/[alfresco]/bin/clean_tomcat.sh /opt/alfresco/[tomcat]/bin/ \
+    && mv /opt/alfresco/[alfresco]/bin/alfresco-mmt.jar /opt/alfresco/[tomcat]/bin/ \
+    && rm -r /opt/alfresco/[alfresco] \
+    && rm /opt/alfresco/[alfresco].zip
 
-RUN wget -O /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga.zip \
-    "https://download.alfresco.com/cloudfront/release/community/201901-GA-build-205/alfresco-content-services-community-distribution-6.1.2-ga.zip" \
-    && unzip /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga.zip -d /opt/alfresco/ \
-    && mkdir -p /opt/alfresco/apache-tomcat-9.0.34/shared/classes \
-    && mkdir -p /opt/alfresco/apache-tomcat-9.0.34/shared/lib \
-    && mkdir /opt/alfresco/apache-tomcat-9.0.34/amps \
-    && mkdir /opt/alfresco/apache-tomcat-9.0.34/amps_share \
-    && rm -rf /opt/alfresco/apache-tomcat-9.0.34/webapps/* \
-    && mv /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga/web-server/webapps/* /opt/alfresco/apache-tomcat-9.0.34/webapps/ \
-    && mv /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga/web-server/conf/Catalina/localhost/* /opt/alfresco/apache-tomcat-9.0.34/conf/ \
-    && mv /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga/web-server/lib/* /opt/alfresco/apache-tomcat-9.0.34/lib/ \
-    && mv /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga/amps/alfresco-share-services.amp /opt/alfresco/apache-tomcat-9.0.34/amps/ \
-    && mv /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga/bin/alfresco-mmt.jar /opt/alfresco/apache-tomcat-9.0.34/bin/ \
-    && rm -rf /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga \
-    && rm /opt/alfresco/alfresco-content-services-community-distribution-6.1.2-ga.zip
+RUN chmod 754 /opt/alfresco/[tomcat]/bin/catalina.sh \
+    && chmod 754 /opt/alfresco/[tomcat]/bin/startup.sh \
+    && chmod 754 /opt/alfresco/[tomcat]/bin/shutdown.sh
 
-RUN chmod 754 /opt/alfresco/apache-tomcat-9.0.34/bin/catalina.sh \
-    && chmod 754 /opt/alfresco/apache-tomcat-9.0.34/bin/startup.sh \
-    && chmod 754 /opt/alfresco/apache-tomcat-9.0.34/bin/shutdown.sh
+COPY ./Deployer.py /opt/alfresco/
+RUN python3 /opt/alfresco/Deployer.py \
+    && rm /opt/alfresco/Deployer.py
 
-COPY ./catalina.properties /opt/alfresco/
-COPY ./server.xml /opt/alfresco/
-COPY ./alfresco-global.properties /opt/alfresco/
-COPY ./apply_amps.sh /opt/alfresco/
-COPY ./clean_tomcat.sh /opt/alfresco/
+RUN chmod 754 /opt/alfresco/[tomcat]/bin/apply_amps.sh \
+    && chmod 754 /opt/alfresco/[tomcat]/bin/clean_tomcat.sh
 
-RUN mv -f /opt/alfresco/catalina.properties /opt/alfresco/apache-tomcat-9.0.34/conf/catalina.properties \
-    && mv -f /opt/alfresco/server.xml /opt/alfresco/apache-tomcat-9.0.34/conf/server.xml \
-    && mv -f /opt/alfresco/alfresco-global.properties /opt/alfresco/apache-tomcat-9.0.34/shared/classes/alfresco-global.properties \
-    && mv /opt/alfresco/apply_amps.sh /opt/alfresco/apache-tomcat-9.0.34/bin/apply_amps.sh \
-    && chmod 754 /opt/alfresco/apache-tomcat-9.0.34/bin/apply_amps.sh \
-    && mv /opt/alfresco/clean_tomcat.sh /opt/alfresco/apache-tomcat-9.0.34/bin/clean_tomcat.sh \
-    && chmod 754 /opt/alfresco/apache-tomcat-9.0.34/bin/clean_tomcat.sh
+COPY ./ApplyAmpsShRunner.py /opt/alfresco/
+RUN python3 /opt/alfresco/ApplyAmpsShRunner.py \
+    && rm /opt/alfresco/ApplyAmpsShRunner.py

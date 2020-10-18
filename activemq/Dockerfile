@@ -1,16 +1,10 @@
-FROM ubuntu
+FROM yuhichyoc/openjdk
 
 RUN mkdir /opt/activemq
 
-RUN apt-get update \
-    && apt-get -y install \
-    openjdk-11-jdk \
-    wget
+COPY ./[activemq]-bin.tar.gz /opt/activemq/
+RUN tar xzf /opt/activemq/[activemq]-bin.tar.gz -C /opt/activemq/ \
+    && rm /opt/activemq/[activemq]-bin.tar.gz
 
-RUN wget -O /opt/activemq/apache-activemq-5.15.12-bin.tar.gz \
-    "http://www.apache.org/dyn/closer.cgi?filename=/activemq/5.15.12/apache-activemq-5.15.12-bin.tar.gz&action=download" \
-    && tar xzf /opt/activemq/apache-activemq-5.15.12-bin.tar.gz -C /opt/activemq/ \
-    && rm /opt/activemq/apache-activemq-5.15.12-bin.tar.gz
-
-RUN chmod 744 /opt/activemq/apache-activemq-5.15.12/bin/activemq \
-    && ln -s /opt/activemq/apache-activemq-5.15.12/bin/activemq /opt/activemq
+RUN chmod 744 /opt/activemq/[activemq]/bin/activemq \
+    && ln -s /opt/activemq/[activemq]/bin/activemq /opt/activemq

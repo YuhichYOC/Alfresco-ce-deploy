@@ -1,3 +1,3 @@
 #!/bin/bash
-cd changeme_workdirectory_fullpath/activemq
-docker build -t changeme_ownername/activemq:latest .
+cd /home/ubuntu/activemq
+docker build -t yuhichyoc/activemq:latest .
