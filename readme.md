@@ -1,5 +1,7 @@
 # How to deploy Alfresco community edition 6.1.2 distribution zip on your machine
 
+## 2020-10-18 : I commited Deployer and build.py. Take a look at how_to_use_this.md.
+
 # Alfresco can't startup without these things
 ## You have to set up these components
 1. Alfresco
