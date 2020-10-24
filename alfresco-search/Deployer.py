@@ -102,6 +102,7 @@ class SolrcorePropertiesEditor:
         fe.read()
         self.content = fe.get_content()
         self.content = self.edit_alfresco_host()
+        self.content = self.edit_alfresco_secure_comms()
         fe.set_content(self.content)
         fe.write()
 
@@ -112,6 +113,17 @@ class SolrcorePropertiesEditor:
             m = p.match(line)
             if m is not None:
                 new_content.append('alfresco.host=' + self.alfresco_host)
+            else:
+                new_content.append(line)
+        return new_content
+
+    def edit_alfresco_secure_comms(self):
+        new_content = []
+        p = re.compile('^ *alfresco\\.secureComms')
+        for line in self.content:
+            m = p.match(line)
+            if m is not None:
+                new_content.append('alfresco.secureComms=none')
             else:
                 new_content.append(line)
         return new_content
