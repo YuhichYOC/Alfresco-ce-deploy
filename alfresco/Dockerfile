@@ -1,7 +1,7 @@
 FROM yuhichyoc/openjdk
 
 RUN mkdir /opt/alfresco \
-    && mkdir /opt/alfresco/repo
+    && mkdir [path_to_repository_directory]
 
 COPY ./[tomcat].zip /opt/alfresco/
 RUN unzip /opt/alfresco/[tomcat].zip -d /opt/alfresco/ \
