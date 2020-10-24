@@ -102,6 +102,7 @@ class GlobalPropertiesEditor:
         self.content = self.uncomment_share()
         self.content = self.insert_solr_setting()
         self.content = self.insert_activemq_setting()
+        self.content = self.insert_transform_services_setting()
         fe.set_content(self.content)
         fe.write()
 
@@ -216,6 +217,14 @@ class GlobalPropertiesEditor:
         new_content.append('')
         new_content.append(
             'messaging.broker.url=failover:(tcp://' + self.activemq_host + ':' + self.activemq_port + ')?timeout=3000')
+        return new_content
+
+    def insert_transform_services_setting(self):
+        new_content = self.content
+        new_content.append('')
+        new_content.append('transform.service.enabled=false')
+        new_content.append('local.transform.service.enabled=false')
+        new_content.append('legacy.transform.service.enabled=true')
         return new_content
 
 
